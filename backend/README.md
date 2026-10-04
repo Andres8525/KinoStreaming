@@ -36,6 +36,12 @@ The API listens on `http://localhost:8080`. CORS allows the Angular dev server a
 
 New public registrations are always assigned `VIEWER`; grant `CREATOR` through a trusted administrative process. Video storage is represented by `videoUrl`; the binary upload to S3 or another object store is not implemented here.
 
+To promote an account after registration, use a trusted database administrator connection, not a public API request:
+
+```sql
+UPDATE users SET role = 'CREATOR' WHERE email = 'creator@example.com';
+```
+
 The recommendation endpoint is a small in-memory collaborative-filtering demonstration over persisted interactions. It is intended to define the integration contract, not to replace a production recommendation service or a scalable ranking query.
 
 Set `DDL_AUTO=validate` in deployed environments and manage schema changes with database migrations. Never use the development JWT key or database password outside local development.
