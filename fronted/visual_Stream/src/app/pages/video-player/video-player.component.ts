@@ -17,6 +17,8 @@ export class VideoPlayerComponent {
   video = signal({
     id: 1,
     title: 'El Último Amanecer — Un cortometraje sobre la resiliencia',
+    thumbnail: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=85',
+    source: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
     creator: 'María Solís',
     creatorAvatar: 'MS',
     subscribers: '4.2K suscriptores',
@@ -28,11 +30,11 @@ export class VideoPlayerComponent {
   });
 
   relatedVideos = signal([
-    { id: 2, title: 'Raíces Digitales — Documental Interactivo', creator: 'Carlos Vega', views: '18.2K', duration: '32:15', avatar: 'CV' },
-    { id: 3, title: 'Sinfonía Urbana — Visuales Generativos', creator: 'Ana Ruiz', views: '12.8K', duration: '8:45', avatar: 'AR' },
-    { id: 4, title: 'Origami en Movimiento — Stop Motion', creator: 'Diego Torres', views: '31.1K', duration: '12:30', avatar: 'DT' },
-    { id: 5, title: 'Ecos del Pacífico — Documental', creator: 'Laura Chen', views: '9.4K', duration: '45:20', avatar: 'LC' },
-    { id: 6, title: 'Luces de Medianoche — Videoclip', creator: 'Banda Nómada', views: '56.7K', duration: '4:18', avatar: 'BN' }
+    { id: 2, title: 'Raíces Digitales — Documental Interactivo', creator: 'Carlos Vega', views: '18.2K', duration: '32:15', avatar: 'CV', thumbnail: 'https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=500&q=80' },
+    { id: 3, title: 'Sinfonía Urbana — Visuales Generativos', creator: 'Ana Ruiz', views: '12.8K', duration: '8:45', avatar: 'AR', thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=500&q=80' },
+    { id: 4, title: 'Origami en Movimiento — Stop Motion', creator: 'Diego Torres', views: '31.1K', duration: '12:30', avatar: 'DT', thumbnail: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=500&q=80' },
+    { id: 5, title: 'Ecos del Pacífico — Documental', creator: 'Laura Chen', views: '9.4K', duration: '45:20', avatar: 'LC', thumbnail: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=500&q=80' },
+    { id: 6, title: 'Luces de Medianoche — Videoclip', creator: 'Banda Nómada', views: '56.7K', duration: '4:18', avatar: 'BN', thumbnail: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=500&q=80' }
   ]);
 
   toggleLike() {

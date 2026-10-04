@@ -1,6 +1,7 @@
 <a [routerLink]="['/watch', video.id]" class="card" [style.animation-delay.ms]="animationDelay">
   <!-- Thumbnail -->
   <div class="card-thumbnail" [style.background]="gradientStyle">
+    <img class="thumbnail-image absolute inset-0 h-full w-full object-cover" [class.image-failed]="imageFailed" [src]="video.thumbnail" [alt]="video.title" loading="lazy" (error)="imageFailed = true"/>
     <div class="thumb-pattern"></div>
     <div class="play-overlay">
       <div class="play-btn">

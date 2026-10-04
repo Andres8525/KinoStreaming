@@ -21,6 +21,9 @@ export class CreatorStudioComponent {
   isDragging = signal(false);
   uploadProgress = signal(0);
   isUploading = signal(false);
+  selectedFile = signal<File | null>(null);
+  fileError = signal('');
+  publishMessage = signal('');
 
   categories = [
     'Cortometrajes', 'Documentales', 'Animación', 'Música',
@@ -75,25 +78,52 @@ export class CreatorStudioComponent {
   onDrop(event: DragEvent) {
     event.preventDefault();
     this.isDragging.set(false);
-    this.simulateUpload();
+    const file = event.dataTransfer?.files[0];
+    if (file) this.prepareFile(file);
   }
 
-  selectFile() {
-    this.simulateUpload();
+  selectFile(input: HTMLInputElement) {
+    input.click();
   }
 
-  simulateUpload() {
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) this.prepareFile(file);
+    input.value = '';
+  }
+
+  prepareFile(file: File) {
+    const allowedVideo = file.type.startsWith('video/') || /\.(mp4|mov|avi|webm|mkv)$/i.test(file.name);
+    if (!allowedVideo) {
+      this.fileError.set('Selecciona un archivo de video compatible.');
+      return;
+    }
+    if (file.size > 4 * 1024 ** 3) {
+      this.fileError.set('El video supera el límite de 4 GB.');
+      return;
+    }
+
+    this.fileError.set('');
+    this.publishMessage.set('');
+    this.selectedFile.set(file);
     this.isUploading.set(true);
     this.uploadProgress.set(0);
     const interval = setInterval(() => {
       this.uploadProgress.update(p => {
         if (p >= 100) {
           clearInterval(interval);
+          this.isUploading.set(false);
           return 100;
         }
         return p + 2;
       });
     }, 80);
+  }
+
+  publishVideo() {
+    if (!this.selectedFile() || !this.videoTitle().trim()) return;
+    this.publishMessage.set('El video y sus detalles están listos para enviarse.');
   }
 
   toggleDonations() {

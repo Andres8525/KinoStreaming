@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { VideoCardComponent } from '../../components/video-card/video-card.component';
@@ -34,19 +34,19 @@ export class DashboardComponent {
     title: 'El Último Amanecer — Un cortometraje sobre la resiliencia',
     creator: 'María Solís',
     description: 'Una historia visual que explora los límites de la esperanza humana a través de paisajes sonoros inmersivos y cinematografía contemplativa.',
-    thumbnail: '',
+    thumbnail: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=85',
     category: 'Cortometraje',
     views: '24.5K vistas',
     duration: '18:42'
   });
 
-  recommendedVideos = signal<Video[]>([
+  private readonly allRecommendedVideos = signal<Video[]>([
     {
       id: 2,
       title: 'Raíces Digitales — Documental Interactivo',
       creator: 'Carlos Vega',
       creatorAvatar: 'CV',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=800&q=80',
       views: '18.2K',
       duration: '32:15',
       category: 'Documental',
@@ -57,7 +57,7 @@ export class DashboardComponent {
       title: 'Sinfonía Urbana — Visuales Generativos',
       creator: 'Ana Ruiz',
       creatorAvatar: 'AR',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
       views: '12.8K',
       duration: '8:45',
       category: 'Experimental',
@@ -68,7 +68,7 @@ export class DashboardComponent {
       title: 'Origami en Movimiento — Animación Stop Motion',
       creator: 'Diego Torres',
       creatorAvatar: 'DT',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80',
       views: '31.1K',
       duration: '12:30',
       category: 'Animación',
@@ -79,7 +79,7 @@ export class DashboardComponent {
       title: 'Ecos del Pacífico — Documental Ambiental',
       creator: 'Laura Chen',
       creatorAvatar: 'LC',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80',
       views: '9.4K',
       duration: '45:20',
       category: 'Documental',
@@ -90,7 +90,7 @@ export class DashboardComponent {
       title: 'Luces de Medianoche — Videoclip Oficial',
       creator: 'Banda Nómada',
       creatorAvatar: 'BN',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
       views: '56.7K',
       duration: '4:18',
       category: 'Música',
@@ -101,7 +101,7 @@ export class DashboardComponent {
       title: 'Código Creativo — Tutorial de Arte Generativo',
       creator: 'Pablo Mendez',
       creatorAvatar: 'PM',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=800&q=80',
       views: '7.3K',
       duration: '22:05',
       category: 'Tutorial',
@@ -112,7 +112,7 @@ export class DashboardComponent {
       title: 'Susurros del Bosque — Cortometraje Contemplativo',
       creator: 'Elena Vidal',
       creatorAvatar: 'EV',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80',
       views: '15.9K',
       duration: '14:55',
       category: 'Cortometraje',
@@ -123,7 +123,7 @@ export class DashboardComponent {
       title: 'Pixel Dreams — Animación Experimental',
       creator: 'Marco Reyes',
       creatorAvatar: 'MR',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
       views: '22.4K',
       duration: '6:38',
       category: 'Animación',
@@ -131,13 +131,13 @@ export class DashboardComponent {
     }
   ]);
 
-  trendingVideos = signal<Video[]>([
+  private readonly allTrendingVideos = signal<Video[]>([
     {
       id: 10,
       title: 'La Ruta de las Estrellas — Time-Lapse',
       creator: 'Sofía Luna',
       creatorAvatar: 'SL',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=800&q=80',
       views: '41.2K',
       duration: '10:15',
       category: 'Documental',
@@ -148,7 +148,7 @@ export class DashboardComponent {
       title: 'Danza Mecánica — Performance Visual',
       creator: 'Ricardo Paz',
       creatorAvatar: 'RP',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80',
       views: '8.6K',
       duration: '7:22',
       category: 'Experimental',
@@ -159,7 +159,7 @@ export class DashboardComponent {
       title: 'Acuarelas Vivas — Proceso Artístico',
       creator: 'Camila Ortiz',
       creatorAvatar: 'CO',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80',
       views: '19.8K',
       duration: '16:40',
       category: 'Tutorial',
@@ -170,7 +170,7 @@ export class DashboardComponent {
       title: 'Horizonte Infinito — Drone Cinematografía',
       creator: 'Andrés Gil',
       creatorAvatar: 'AG',
-      thumbnail: '',
+      thumbnail: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
       views: '33.5K',
       duration: '20:10',
       category: 'Documental',
@@ -178,7 +178,24 @@ export class DashboardComponent {
     }
   ]);
 
+  recommendedVideos = computed(() => this.filterVideos(this.allRecommendedVideos()));
+  trendingVideos = computed(() => this.filterVideos(this.allTrendingVideos()));
+
   scrollPosition = signal(0);
+
+  private filterVideos(videos: Video[]): Video[] {
+    const categoryAliases: Record<string, string> = {
+      Cortometrajes: 'Cortometraje',
+      Documentales: 'Documental',
+      Videoclips: 'Videoclip',
+      Tutoriales: 'Tutorial'
+    };
+    const category = categoryAliases[this.activeCategory()] ?? this.activeCategory();
+
+    return category === 'Todo'
+      ? videos
+      : videos.filter(video => video.category === category);
+  }
 
   setCategory(category: string) {
     this.activeCategory.set(category);

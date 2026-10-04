@@ -190,6 +190,17 @@
   color: #94A3B8;
 }
 
+.upload-error {
+  margin-top: 10px;
+  color: #B42318;
+  font-size: 13px;
+}
+
+.publish-message {
+  color: #047857;
+  font-size: 14px;
+}
+
 /* Upload Progress */
 .upload-progress-content {
   display: flex;
@@ -382,6 +393,13 @@
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(255, 107, 69, 0.35);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    transform: none;
+    box-shadow: none;
   }
 
   .btn-icon {

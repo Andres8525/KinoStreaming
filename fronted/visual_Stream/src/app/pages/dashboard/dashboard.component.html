@@ -39,6 +39,7 @@
       </div>
       <div class="hero-visual animate-scale-in delay-200">
         <div class="hero-thumbnail">
+          <img class="hero-image absolute inset-0 h-full w-full object-cover" [src]="featuredVideo().thumbnail" [alt]="featuredVideo().title" fetchpriority="high"/>
           <div class="thumbnail-gradient"></div>
           <div class="play-overlay">
             <div class="play-button-hero">
@@ -55,7 +56,7 @@
 
   <!-- ====== CATEGORIES ====== -->
   <section class="categories-section">
-    <div class="section-container">
+    <div class="section-container mx-auto w-full max-w-350 px-6">
       <div class="categories-scroll">
         @for (cat of categories(); track cat) {
           <button
@@ -71,7 +72,7 @@
 
   <!-- ====== RECOMMENDED FOR YOU (AI) ====== -->
   <section class="content-section">
-    <div class="section-container">
+    <div class="section-container mx-auto w-full max-w-350 px-6">
       <div class="section-header">
         <div class="section-title-group">
           <h2 class="section-title">Recomendado para ti</h2>
@@ -111,7 +112,7 @@
 
   <!-- ====== TRENDING ====== -->
   <section class="content-section section-alt">
-    <div class="section-container">
+    <div class="section-container mx-auto w-full max-w-350 px-6">
       <div class="section-header">
         <div class="section-title-group">
           <h2 class="section-title">Tendencias</h2>
@@ -151,7 +152,7 @@
 
   <!-- ====== CTA SECTION ====== -->
   <section class="cta-section">
-    <div class="section-container">
+    <div class="section-container mx-auto w-full max-w-350 px-6">
       <div class="cta-card">
         <div class="cta-content">
           <h2 class="cta-title">¿Eres creador?</h2>
@@ -174,7 +175,7 @@
 
   <!-- ====== FOOTER ====== -->
   <footer class="footer">
-    <div class="section-container">
+    <div class="section-container mx-auto w-full max-w-350 px-6">
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-logo">

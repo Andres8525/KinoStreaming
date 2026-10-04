@@ -12,6 +12,7 @@ import { RouterLink } from '@angular/router';
 export class VideoCardComponent {
   @Input() video: any;
   @Input() animationDelay: number = 0;
+  imageFailed = false;
 
   get gradientStyle(): string {
     const gradients = [

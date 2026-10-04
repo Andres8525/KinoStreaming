@@ -1,7 +1,7 @@
 <div class="studio">
   <!-- Header -->
   <div class="studio-header">
-    <div class="studio-container">
+    <div class="studio-container mx-auto w-full max-w-300 px-6">
       <div class="header-content">
         <div>
           <h1 class="studio-title animate-fade-in">Creator Studio</h1>
@@ -45,7 +45,7 @@
 
   <!-- Content -->
   <div class="studio-content">
-    <div class="studio-container">
+    <div class="studio-container mx-auto w-full max-w-300 px-6">
 
       <!-- ===== UPLOAD TAB ===== -->
       @if (activeTab() === 'upload') {
@@ -53,25 +53,42 @@
           <div class="upload-grid">
             <!-- Drop Zone -->
             <div class="upload-section">
+              <input #videoFileInput class="sr-only" type="file" accept="video/*" (change)="onFileSelected($event)"/>
               <div
                 class="dropzone"
                 [class.dragging]="isDragging()"
                 [class.uploading]="isUploading()"
+                role="button"
+                tabindex="0"
                 (dragover)="onDragOver($event)"
                 (dragleave)="onDragLeave()"
                 (drop)="onDrop($event)"
-                (click)="selectFile()">
+                (click)="selectFile(videoFileInput)"
+                (keydown.enter)="selectFile(videoFileInput)"
+                (keydown.space)="$event.preventDefault(); selectFile(videoFileInput)">
 
                 @if (!isUploading()) {
-                  <div class="dropzone-content">
-                    <div class="dropzone-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/>
-                      </svg>
+                  @if (selectedFile(); as file) {
+                    <div class="dropzone-content">
+                      <div class="dropzone-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
+                        </svg>
+                      </div>
+                      <p class="dropzone-text">{{ file.name }}</p>
+                      <p class="dropzone-hint">Archivo listo para publicar · {{ (file.size / 1048576) | number:'1.0-1' }} MB</p>
                     </div>
-                    <p class="dropzone-text">Arrastra tu video aquí o <span class="dropzone-link">selecciona un archivo</span></p>
-                    <p class="dropzone-hint">MP4, MOV, AVI — Máximo 4GB</p>
-                  </div>
+                  } @else {
+                    <div class="dropzone-content">
+                      <div class="dropzone-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/>
+                        </svg>
+                      </div>
+                      <p class="dropzone-text">Arrastra tu video aquí o <span class="dropzone-link">selecciona un archivo</span></p>
+                      <p class="dropzone-hint">MP4, MOV, AVI o WebM · Máximo 4 GB</p>
+                    </div>
+                  }
                 } @else {
                   <div class="upload-progress-content">
                     <div class="progress-circle">
@@ -89,6 +106,9 @@
                   </div>
                 }
               </div>
+              @if (fileError()) {
+                <p class="upload-error" role="alert">{{ fileError() }}</p>
+              }
             </div>
 
             <!-- Form -->
@@ -143,12 +163,15 @@
                 </div>
               </div>
 
-              <button class="btn-publish">
+              <button class="btn-publish" [disabled]="!selectedFile() || !videoTitle().trim()" (click)="publishVideo()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="btn-icon">
                   <path fill-rule="evenodd" d="M9.315 7.584C12.195 3.883 16.695 1.5 21.75 1.5a.75.75 0 0 1 .75.75c0 5.056-2.383 9.555-6.084 12.436A6.75 6.75 0 0 1 9.75 22.5a.75.75 0 0 1-.75-.75v-4.131A15.838 15.838 0 0 1 6.382 15H2.25a.75.75 0 0 1-.75-.75 6.75 6.75 0 0 1 7.815-6.666ZM15 6.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" clip-rule="evenodd"/>
                 </svg>
                 Publicar Video
               </button>
+              @if (publishMessage()) {
+                <p class="publish-message" role="status">{{ publishMessage() }}</p>
+              }
             </div>
           </div>
         </div>
@@ -201,7 +224,7 @@
               </div>
               <div class="toggle-row">
                 <span class="toggle-label">Activar donaciones</span>
-                <button class="toggle" [class.active]="donationsEnabled()" (click)="toggleDonations()">
+                <button class="toggle" [class.active]="donationsEnabled()" role="switch" [attr.aria-checked]="donationsEnabled()" (click)="toggleDonations()">
                   <span class="toggle-knob"></span>
                 </button>
               </div>

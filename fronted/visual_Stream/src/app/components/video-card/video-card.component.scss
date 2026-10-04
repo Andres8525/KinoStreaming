@@ -43,6 +43,18 @@
   }
 }
 
+.thumbnail-image {
+  transition: transform 0.5s ease;
+}
+
+.thumbnail-image.image-failed {
+  display: none;
+}
+
+.card:hover .thumbnail-image {
+  transform: scale(1.04);
+}
+
 .thumb-pattern {
   position: absolute;
   inset: 0;

@@ -1,7 +1,7 @@
 <div class="player-page">
 
   <!-- ====== MAIN CONTENT ====== -->
-  <div class="player-layout">
+  <div class="player-layout mx-auto w-full max-w-350 px-6">
 
     <!-- ====== LEFT: VIDEO + INFO ====== -->
     <div class="player-main">
@@ -9,6 +9,10 @@
       <!-- Video Player -->
       <div class="video-wrapper animate-fade-in">
         <div class="video-player">
+          <video class="video-media absolute inset-0 h-full w-full" controls playsinline preload="metadata" [poster]="video().thumbnail" aria-label="Reproducir video: {{ video().title }}">
+            <source [src]="video().source" type="video/mp4"/>
+            Tu navegador no puede reproducir este formato de video.
+          </video>
           <div class="video-gradient-top"></div>
           <div class="video-gradient-bottom"></div>
 
@@ -173,6 +177,7 @@
         <a [routerLink]="['/watch', related.id]" class="related-card" [style.animation-delay.ms]="(i + 2) * 100">
           <!-- Thumbnail -->
           <div class="related-thumb">
+            <img class="related-image absolute inset-0 h-full w-full object-cover" [src]="related.thumbnail" [alt]="related.title" loading="lazy"/>
             <div class="related-thumb-pattern"></div>
             <div class="related-play-overlay">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

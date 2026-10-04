@@ -34,6 +34,20 @@
   overflow: hidden;
 }
 
+.video-media {
+  z-index: 5;
+  object-fit: contain;
+  background: #0F172A;
+}
+
+.video-gradient-top,
+.video-gradient-bottom,
+.video-pattern,
+.video-play-center,
+.video-controls {
+  display: none;
+}
+
 .video-gradient-top {
   position: absolute;
   top: 0;
@@ -504,6 +518,10 @@
   border-radius: 10px;
   overflow: hidden;
   background: linear-gradient(135deg, #1E293B, #475569);
+}
+
+.related-image {
+  z-index: 0;
 }
 
 .related-thumb-pattern {
