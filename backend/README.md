@@ -8,7 +8,13 @@ REST API built with Java 17, Spring Boot, Spring Security, JWT, Spring Data JPA 
 - Maven 3.9+
 - PostgreSQL 14 or later
 
-Create a local database and user (adjust credentials as needed):
+Start a local PostgreSQL database with Docker Compose:
+
+```powershell
+docker compose up -d postgres
+```
+
+Or create the local database and user manually (adjust credentials as needed):
 
 ```sql
 CREATE USER kino WITH PASSWORD 'kino_dev_password';
