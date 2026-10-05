@@ -62,27 +62,20 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService,
-                                                       PasswordEncoder passwordEncoder) {
+    AuthenticationManager authenticationManager(CustomUserDetailsService userDetailsService,
+                                                 PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
-        return provider;
+        return new ProviderManager(provider);
     }
 
     @Bean
-    AuthenticationManager authenticationManager(DaoAuthenticationProvider authenticationProvider) {
-        return new ProviderManager(authenticationProvider);
-    }
-
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter,
-                                             DaoAuthenticationProvider authenticationProvider) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
                 .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(
                         (request, response, exception) -> response.sendError(HttpStatus.UNAUTHORIZED.value(), "Autenticación requerida")))
                 .authorizeHttpRequests(authorize -> authorize

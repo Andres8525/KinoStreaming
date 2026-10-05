@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kino.backend.dto.AuthResponse;
+import com.kino.backend.dto.CreateVideoRequest;
 import com.kino.backend.dto.LoginRequest;
 import com.kino.backend.dto.RegisterRequest;
 import com.kino.backend.model.UserRole;
@@ -16,12 +17,12 @@ import com.kino.backend.repository.UserRepository;
 import com.kino.backend.security.JwtService;
 import java.util.List;
 import java.util.Map;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -120,5 +121,27 @@ class ApiIntegrationTest {
                         .content(payload))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.validationErrors.videoUrl").exists());
+    }
+
+    @Test
+    void creatorCanPublishVideoWithMonetization() throws Exception {
+        var creator = userRepository.save(new com.kino.backend.model.User(
+                "Publishing Creator", "creator-publish@example.com",
+                passwordEncoder.encode("secure-password-1"), UserRole.CREATOR));
+        String token = jwtService.generateToken(creator);
+        String payload = objectMapper.writeValueAsString(new CreateVideoRequest(
+                "A Kino Short", "Independent short film", "https://cdn.example.com/short.mp4",
+                List.of("Cortometraje", "Indie"), new java.math.BigDecimal("4.99"),
+                new java.math.BigDecimal("2.00")));
+
+        mockMvc.perform(post("/api/creator/videos")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.title").value("A Kino Short"))
+                .andExpect(jsonPath("$.creatorName").value("Publishing Creator"))
+                .andExpect(jsonPath("$.accessPrice").value(4.99))
+                .andExpect(jsonPath("$.suggestedDonation").value(2.00));
     }
 }
