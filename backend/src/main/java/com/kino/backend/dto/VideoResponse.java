@@ -14,13 +14,17 @@ public record VideoResponse(
         List<String> tags,
         BigDecimal accessPrice,
         BigDecimal suggestedDonation,
-        String creatorName,
+        CreatorSummaryResponse creator,
         Instant createdAt) {
+
+    public VideoResponse {
+        tags = List.copyOf(tags);
+    }
 
     public static VideoResponse from(Video video) {
         return new VideoResponse(
                 video.getId(), video.getTitle(), video.getDescription(), video.getVideoUrl(),
                 video.getTags(), video.getAccessPrice(), video.getSuggestedDonation(),
-                video.getCreator().getDisplayName(), video.getCreatedAt());
+                CreatorSummaryResponse.from(video.getCreator()), video.getCreatedAt());
     }
 }

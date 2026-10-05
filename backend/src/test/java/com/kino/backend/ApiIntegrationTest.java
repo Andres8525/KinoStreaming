@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kino.backend.dto.AuthResponse;
 import com.kino.backend.dto.CreateVideoRequest;
+import com.kino.backend.dto.CreateInteractionRequest;
 import com.kino.backend.dto.LoginRequest;
 import com.kino.backend.dto.RegisterRequest;
 import com.kino.backend.model.UserRole;
@@ -17,6 +18,8 @@ import com.kino.backend.repository.UserRepository;
 import com.kino.backend.security.JwtService;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,6 +46,9 @@ class ApiIntegrationTest {
 
         @Autowired
         private PasswordEncoder passwordEncoder;
+
+        @Autowired
+        private Validator validator;
 
     @Test
     void registerIssuesViewerTokenAndRecommendationsAcceptIt() throws Exception {
@@ -140,8 +146,17 @@ class ApiIntegrationTest {
                         .content(payload))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.title").value("A Kino Short"))
-                .andExpect(jsonPath("$.creatorName").value("Publishing Creator"))
+                                .andExpect(jsonPath("$.creator.displayName").value("Publishing Creator"))
                 .andExpect(jsonPath("$.accessPrice").value(4.99))
                 .andExpect(jsonPath("$.suggestedDonation").value(2.00));
     }
+
+        @Test
+        void interactionDtoValidatesRatingAndWatchDuration() {
+                var invalidInteraction = new CreateInteractionRequest(UUID.randomUUID(), 6, -1);
+
+                var violations = validator.validate(invalidInteraction);
+
+                org.junit.jupiter.api.Assertions.assertEquals(2, violations.size());
+        }
 }
